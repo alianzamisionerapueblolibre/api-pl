@@ -1,0 +1,49 @@
+{
+  "name": "api-pl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node ./src/app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alianzamisionerapueblolibre/api-pl.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alianzamisionerapueblolibre/api-pl/issues"
+  },
+  "homepage": "https://github.com/alianzamisionerapueblolibre/api-pl#readme",
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/koa": "^2.13.12",
+    "@types/koa-bodyparser": "^4.3.12",
+    "@types/koa-router": "^7.4.8",
+    "@types/node": "^20.10.4",
+    "@types/object-mapper": "^6.2.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@colors/colors": "^1.6.0",
+    "@types/dotenv": "^8.2.0",
+    "bcrypt": "^5.1.1",
+    "class-validator": "^0.14.0",
+    "dotenv": "^16.3.1",
+    "jsonwebtoken": "^9.0.2",
+    "koa": "^2.14.2",
+    "koa-bodyparser": "^4.4.1",
+    "koa-router": "^12.0.1",
+    "mysql": "^2.18.1",
+    "object-mapper": "^6.2.0",
+    "reflect-metadata": "^0.2.1",
+    "routing-controllers": "^0.10.4",
+    "typedi": "^0.10.0",
+    "typeorm": "^0.3.17"
+  }
+}
