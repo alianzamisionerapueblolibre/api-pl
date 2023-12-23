@@ -1,13 +1,6 @@
-import { BaseContext } from 'koa'
+import { BaseResponseInterface } from 'interfaces/response/base-response.interface';
 
-export class ResponseHelper {
+export const outApi = (status: number, body?: any): BaseResponseInterface => {
 
-    outApiCall = (
-        context: BaseContext,
-        status: number,
-        body?: Record<string, any> | string | Array<Record<string, any>>,
-    ): void => {
-        context.status = status;
-        context.body = body;
-    }
+    return { status, body } as BaseResponseInterface;
 }

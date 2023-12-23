@@ -9,12 +9,12 @@ import { MapperUserRequestToEntity } from '../mappers/user.mapper';
 @JsonController('/user')
 @Service()
 export class UserController {
-    constructor(private readonly usersService: UserService) { }
+    constructor(private readonly service: UserService) { }
 
     @Post()
     async post(@Body() userRequest: UserRequestInterface) {
         const user = MapperUserRequestToEntity(userRequest);
 
-        return this.usersService.saveNewUser(user);
+        return this.service.saveNewUser(user);
     }
 }

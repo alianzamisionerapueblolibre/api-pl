@@ -4,6 +4,9 @@ import { DataSource } from 'typeorm';
 import { BaseService } from './base/base.service';
 import { DistrictEntity } from '../entities/district.entity';
 import * as errors from '../helpers/errors.helper';
+import { outApi } from '../helpers/response.helper';
+import { BaseResponseInterface } from '../interfaces/response/base-response.interface';
+import { MapperMasterResponse } from '../mappers/master-response.mapper';
 
 @Service()
 export class DistrictService extends BaseService<DistrictEntity> {
@@ -11,36 +14,9 @@ export class DistrictService extends BaseService<DistrictEntity> {
         super(db.getRepository(DistrictEntity));
     }
 
-    saveNewDistrict = async (districtEntity: DistrictEntity): Promise<DistrictEntity> => {
-
+    findAll = async (): Promise<BaseResponseInterface> => {
         try {
-            return await this.repository.save(districtEntity);
-        } catch (error) {
-            throw new errors.InternalServerError();
-        }
-    }
-
-    updateDistrict = async (districtEntity: DistrictEntity): Promise<DistrictEntity> => {
-
-        try {
-            return await this.repository.save(districtEntity);
-        } catch (error) {
-            throw new errors.InternalServerError();
-        }
-    }
-
-    deleteDistrict = async (districtEntity: DistrictEntity): Promise<DistrictEntity> => {
-
-        try {
-            return await this.repository.remove(districtEntity);
-        } catch (error) {
-            throw new errors.InternalServerError();
-        }
-    }
-
-    findAllDistrict = async (): Promise<DistrictEntity[]> => {
-        try {
-            return await this.repository.find();
+            return outApi(200, MapperMasterResponse(await this.repository.find()));
         } catch (error) {
             throw new errors.InternalServerError();
         }

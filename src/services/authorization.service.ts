@@ -1,6 +1,6 @@
 import { Service } from 'typedi';
 import jwt from 'jsonwebtoken';
-import { configurationGlobal } from 'providers/configuration.provider';
+import { configurationGlobal } from '../providers/configuration.provider';
 import * as errors from '../helpers/errors.helper';
 import { DecodedJwtToken } from 'interfaces/authorization.interface';
 import { UserEntity } from 'entities/user.entity';

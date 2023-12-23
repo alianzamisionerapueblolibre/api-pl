@@ -4,6 +4,9 @@ import { DataSource } from 'typeorm';
 import { BaseService } from './base/base.service';
 import { MaritalStatusEntity } from '../entities/marital-status.entity';
 import * as errors from '../helpers/errors.helper';
+import { BaseResponseInterface } from '../interfaces/response/base-response.interface';
+import { outApi } from '../helpers/response.helper';
+import { MapperMasterResponse } from '../mappers/master-response.mapper';
 
 @Service()
 export class MaritalStatusService extends BaseService<MaritalStatusEntity> {
@@ -11,36 +14,9 @@ export class MaritalStatusService extends BaseService<MaritalStatusEntity> {
         super(db.getRepository(MaritalStatusEntity));
     }
 
-    saveNewMaritalStatus = async (maritalStatusEntity: MaritalStatusEntity): Promise<MaritalStatusEntity> => {
-
+    findAll = async (): Promise<BaseResponseInterface> => {
         try {
-            return await this.repository.save(maritalStatusEntity);
-        } catch (error) {
-            throw new errors.InternalServerError();
-        }
-    }
-
-    updateMaritalStatus = async (maritalStatusEntity: MaritalStatusEntity): Promise<MaritalStatusEntity> => {
-
-        try {
-            return await this.repository.save(maritalStatusEntity);
-        } catch (error) {
-            throw new errors.InternalServerError();
-        }
-    }
-
-    deleteMaritalStatus = async (maritalStatusEntity: MaritalStatusEntity): Promise<MaritalStatusEntity> => {
-
-        try {
-            return await this.repository.remove(maritalStatusEntity);
-        } catch (error) {
-            throw new errors.InternalServerError();
-        }
-    }
-
-    findAllMaritalStatus = async (): Promise<MaritalStatusEntity[]> => {
-        try {
-            return await this.repository.find();
+            return outApi(200, MapperMasterResponse(await this.repository.find()));
         } catch (error) {
             throw new errors.InternalServerError();
         }

@@ -4,6 +4,9 @@ import { DataSource } from 'typeorm';
 import { BaseService } from './base/base.service';
 import { ProfileEntity } from '../entities/profile.entity';
 import * as errors from '../helpers/errors.helper';
+import { BaseResponseInterface } from '../interfaces/response/base-response.interface';
+import { outApi } from '../helpers/response.helper';
+import { MapperMasterResponse } from '../mappers/master-response.mapper';
 
 @Service()
 export class ProfileService extends BaseService<ProfileEntity> {
@@ -11,36 +14,9 @@ export class ProfileService extends BaseService<ProfileEntity> {
         super(db.getRepository(ProfileEntity));
     }
 
-    saveNewProfile = async (profileEntity: ProfileEntity): Promise<ProfileEntity> => {
-
+    findAll = async (): Promise<BaseResponseInterface> => {
         try {
-            return await this.repository.save(profileEntity);
-        } catch (error) {
-            throw new errors.InternalServerError();
-        }
-    }
-
-    updateProfile = async (profileEntity: ProfileEntity): Promise<ProfileEntity> => {
-
-        try {
-            return await this.repository.save(profileEntity);
-        } catch (error) {
-            throw new errors.InternalServerError();
-        }
-    }
-
-    deleteProfile = async (profileEntity: ProfileEntity): Promise<ProfileEntity> => {
-
-        try {
-            return await this.repository.remove(profileEntity);
-        } catch (error) {
-            throw new errors.InternalServerError();
-        }
-    }
-
-    findAllProfile = async (): Promise<ProfileEntity[]> => {
-        try {
-            return await this.repository.find();
+            return outApi(200, MapperMasterResponse(await this.repository.find()));
         } catch (error) {
             throw new errors.InternalServerError();
         }
