@@ -4,6 +4,8 @@ import { BaseService } from './base/base.service';
 import * as errors from '../helpers/errors.helper';
 import { bcryptCompareAsync, bcryptHashAsync } from '../helpers/crypto.helper';
 import { UserEntity } from '../entities/user.entity';
+import { outApi } from '../helpers/response.helper';
+import { BaseResponseInterface } from '../interfaces/response/base-response.interface';
 
 @Service()
 export class UserService extends BaseService<UserEntity> {
@@ -44,11 +46,11 @@ export class UserService extends BaseService<UserEntity> {
         return;
     }
 
-    saveNewUser = async (userEntity: UserEntity): Promise<UserEntity> => {
+    saveNewUser = async (userEntity: UserEntity): Promise<BaseResponseInterface> => {
 
         try {
             userEntity.Password = await bcryptHashAsync(userEntity.Password, 8);
-            return await this.repository.save(userEntity);
+            return outApi(200, (await this.repository.save(userEntity)).Id);
         } catch (error) {
             throw new errors.InternalServerError();
         }

@@ -4,6 +4,8 @@ import { DataSource } from 'typeorm';
 import { BaseService } from './base/base.service';
 import { ProfileUserEntity } from '../entities/profile-user.entity';
 import * as errors from '../helpers/errors.helper';
+import { outApi } from '../helpers/response.helper';
+import { BaseResponseInterface } from '../interfaces/response/base-response.interface';
 
 @Service()
 export class ProfileUserService extends BaseService<ProfileUserEntity> {
@@ -11,10 +13,10 @@ export class ProfileUserService extends BaseService<ProfileUserEntity> {
         super(db.getRepository(ProfileUserEntity));
     }
 
-    saveNewProfileUser = async (profileUserEntity: ProfileUserEntity): Promise<ProfileUserEntity> => {
+    saveNewProfileUser = async (profileUserEntity: ProfileUserEntity): Promise<BaseResponseInterface> => {
 
         try {
-            return await this.repository.save(profileUserEntity);
+            return outApi(200, (await this.repository.save(profileUserEntity)).Id);
         } catch (error) {
             throw new errors.InternalServerError();
         }
