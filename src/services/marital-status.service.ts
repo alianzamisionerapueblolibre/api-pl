@@ -7,6 +7,7 @@ import * as errors from '../helpers/errors.helper';
 import { BaseResponseInterface } from '../interfaces/response/base-response.interface';
 import { outApi } from '../helpers/response.helper';
 import { MapperMasterResponse } from '../mappers/master-response.mapper';
+import { OKHttpCode } from '../utils/constants/status-http.constant';
 
 @Service()
 export class MaritalStatusService extends BaseService<MaritalStatusEntity> {
@@ -16,7 +17,7 @@ export class MaritalStatusService extends BaseService<MaritalStatusEntity> {
 
     findAll = async (): Promise<BaseResponseInterface> => {
         try {
-            return outApi(200, MapperMasterResponse(await this.repository.find()));
+            return outApi(OKHttpCode, MapperMasterResponse(await this.repository.find()));
         } catch (error) {
             throw new errors.InternalServerError();
         }

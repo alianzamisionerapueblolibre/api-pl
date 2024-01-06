@@ -7,6 +7,7 @@ import * as errors from '../helpers/errors.helper';
 import { BaseResponseInterface } from '../interfaces/response/base-response.interface';
 import { outApi } from '../helpers/response.helper';
 import { MapperMasterResponse } from '../mappers/master-response.mapper';
+import { OKHttpCode } from '../utils/constants/status-http.constant';
 
 @Service()
 export class PersonService extends BaseService<PersonEntity> {
@@ -17,7 +18,7 @@ export class PersonService extends BaseService<PersonEntity> {
     saveNewPerson = async (personEntity: PersonEntity): Promise<BaseResponseInterface> => {
 
         try {
-            return outApi(200, (await this.repository.save(personEntity)).Id);
+            return outApi(OKHttpCode, (await this.repository.save(personEntity)).Id);
         } catch (error) {
             throw new errors.InternalServerError();
         }
@@ -26,7 +27,7 @@ export class PersonService extends BaseService<PersonEntity> {
     updatePerson = async (personEntity: PersonEntity): Promise<BaseResponseInterface> => {
 
         try {
-            return outApi(200, (await this.repository.save(personEntity)).Id);
+            return outApi(OKHttpCode, (await this.repository.save(personEntity)).Id);
         } catch (error) {
             throw new errors.InternalServerError();
         }
@@ -35,7 +36,7 @@ export class PersonService extends BaseService<PersonEntity> {
     deletePerson = async (personEntity: PersonEntity): Promise<BaseResponseInterface> => {
 
         try {
-            return outApi(200, (await this.repository.remove(personEntity)).Id);
+            return outApi(OKHttpCode, (await this.repository.remove(personEntity)).Id);
         } catch (error) {
             throw new errors.InternalServerError();
         }
@@ -43,7 +44,7 @@ export class PersonService extends BaseService<PersonEntity> {
 
     findAllPerson = async (): Promise<BaseResponseInterface> => {
         try {
-            return outApi(200, MapperMasterResponse(await this.repository.find()));
+            return outApi(OKHttpCode, MapperMasterResponse(await this.repository.find()));
         } catch (error) {
             throw new errors.InternalServerError();
         }

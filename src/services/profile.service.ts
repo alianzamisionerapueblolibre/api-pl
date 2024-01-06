@@ -7,6 +7,7 @@ import * as errors from '../helpers/errors.helper';
 import { BaseResponseInterface } from '../interfaces/response/base-response.interface';
 import { outApi } from '../helpers/response.helper';
 import { MapperMasterResponse } from '../mappers/master-response.mapper';
+import { OKHttpCode } from '../utils/constants/status-http.constant';
 
 @Service()
 export class ProfileService extends BaseService<ProfileEntity> {
@@ -16,7 +17,7 @@ export class ProfileService extends BaseService<ProfileEntity> {
 
     findAll = async (): Promise<BaseResponseInterface> => {
         try {
-            return outApi(200, MapperMasterResponse(await this.repository.find()));
+            return outApi(OKHttpCode, MapperMasterResponse(await this.repository.find()));
         } catch (error) {
             throw new errors.InternalServerError();
         }
@@ -32,8 +33,8 @@ export class ProfileService extends BaseService<ProfileEntity> {
             throw new errors.InternalServerError();
         }
 
-        if (!profile) throw new errors.ProfileNotFound();
+        if (profile === null) throw new errors.ProfileNotFound();
 
-        return outApi(200, { code: profile.Code, id: profile.Id, description: profile.Description });
+        return outApi(OKHttpCode, { code: profile.Code, id: profile.Id, description: profile.Description });
     }
 }

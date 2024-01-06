@@ -6,6 +6,7 @@ import { ProfileUserEntity } from '../entities/profile-user.entity';
 import * as errors from '../helpers/errors.helper';
 import { outApi } from '../helpers/response.helper';
 import { BaseResponseInterface } from '../interfaces/response/base-response.interface';
+import { OKHttpCode } from '../utils/constants/status-http.constant';
 
 @Service()
 export class ProfileUserService extends BaseService<ProfileUserEntity> {
@@ -16,7 +17,7 @@ export class ProfileUserService extends BaseService<ProfileUserEntity> {
     saveNewProfileUser = async (profileUserEntity: ProfileUserEntity): Promise<BaseResponseInterface> => {
 
         try {
-            return outApi(200, (await this.repository.save(profileUserEntity)).Id);
+            return outApi(OKHttpCode, (await this.repository.save(profileUserEntity)).Id);
         } catch (error) {
             throw new errors.InternalServerError();
         }

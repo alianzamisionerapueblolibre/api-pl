@@ -6,6 +6,7 @@ import { bcryptCompareAsync, bcryptHashAsync } from '../helpers/crypto.helper';
 import { UserEntity } from '../entities/user.entity';
 import { outApi } from '../helpers/response.helper';
 import { BaseResponseInterface } from '../interfaces/response/base-response.interface';
+import { OKHttpCode } from '../utils/constants/status-http.constant';
 
 @Service()
 export class UserService extends BaseService<UserEntity> {
@@ -50,7 +51,7 @@ export class UserService extends BaseService<UserEntity> {
 
         try {
             userEntity.Password = await bcryptHashAsync(userEntity.Password, 8);
-            return outApi(200, (await this.repository.save(userEntity)).Id);
+            return outApi(OKHttpCode, (await this.repository.save(userEntity)).Id);
         } catch (error) {
             throw new errors.InternalServerError();
         }
