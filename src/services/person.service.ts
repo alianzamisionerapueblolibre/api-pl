@@ -6,7 +6,6 @@ import { PersonEntity } from '../entities/person.entity';
 import * as errors from '../helpers/errors.helper';
 import { BaseResponseInterface } from '../interfaces/response/base-response.interface';
 import { outApi } from '../helpers/response.helper';
-import { MapperMasterResponse } from '../mappers/master-response.mapper';
 import { OKHttpCode } from '../utils/constants/status-http.constant';
 
 @Service()
@@ -27,7 +26,7 @@ export class PersonService extends BaseService<PersonEntity> {
     updatePerson = async (personEntity: PersonEntity): Promise<BaseResponseInterface> => {
 
         try {
-            return outApi(OKHttpCode, (await this.repository.save(personEntity)).Id);
+            return outApi(OKHttpCode, await this.repository.save(personEntity));
         } catch (error) {
             throw new errors.InternalServerError();
         }

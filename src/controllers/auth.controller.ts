@@ -1,11 +1,13 @@
 import { AuthRequestInterface } from '../interfaces/request/auth-request.interface';
-import { Body, Get, JsonController } from 'routing-controllers';
+import { Body, Get, JsonController, Put } from 'routing-controllers';
 import { UserService } from '../services/user.service';
 import { Service } from 'typedi';
 import { OKHttpCode } from '../utils/constants/status-http.constant';
 import { outApi } from '../helpers/response.helper';
 import { PersonService } from '../services/person.service';
 import { PersonEntity } from '../entities/person.entity';
+import { PersonRequestInterface } from '../interfaces/request/person-request.interface';
+import { personUpdateMessage } from '../utils/constants/message-http.constant';
 
 @JsonController('/auth')
 @Service()
@@ -15,6 +17,38 @@ export class UserPersonController {
         private readonly userService: UserService,
         private readonly personService: PersonService
     ) { }
+
+    @Put('/person')
+    async putPerson(@Body() request: PersonRequestInterface) {
+
+        const resultPerson = await this.personService.findPerson({
+            relations: ['MaritalStatus', 'Gender', 'District',],
+            where: { Id: request.id }
+        });
+
+        if (resultPerson.status !== OKHttpCode) return resultPerson;
+
+        const updatePersonData: PersonEntity = {
+            ...(resultPerson.body as PersonEntity),
+            Id: request.id || (resultPerson.body as PersonEntity).Id,
+            FirstName: request.firstName || (resultPerson.body as PersonEntity).FirstName,
+            LastName: request.lastName || (resultPerson.body as PersonEntity).LastName,
+            Address: request.address || (resultPerson.body as PersonEntity).Address,
+            Email: request.email || (resultPerson.body as PersonEntity).Email,
+            PhoneNumber: request.phoneNumber || (resultPerson.body as PersonEntity).PhoneNumber,
+            GenderId: request.gender.id || (resultPerson.body as PersonEntity).GenderId,
+            DistrictId: request.district.id || (resultPerson.body as PersonEntity).DistrictId,
+            MaritalStatusId: request.marital_status.id || (resultPerson.body as PersonEntity).MaritalStatusId,
+            UserModified: 'admin',
+            DateModified: new Date()
+        };
+
+        const updatePerson = await this.personService.updatePerson(updatePersonData);
+
+        if (updatePerson.status !== OKHttpCode) return updatePerson;
+
+        return outApi(OKHttpCode, personUpdateMessage);
+    }
 
     @Get('/login')
     async getAuthUser(@Body() request: AuthRequestInterface) {
