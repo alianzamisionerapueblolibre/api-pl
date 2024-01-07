@@ -1,8 +1,9 @@
 
 export interface UserRequestInterface {
-    userName: string;
+    id?: number;
+    userName?: string;
     password: string;
-    person: {
-        id: number;
+    person?: {
+        id?: number;
     };
 }

@@ -7,7 +7,9 @@ import { outApi } from '../helpers/response.helper';
 import { PersonService } from '../services/person.service';
 import { PersonEntity } from '../entities/person.entity';
 import { PersonRequestInterface } from '../interfaces/request/person-request.interface';
-import { personUpdateMessage } from '../utils/constants/message-http.constant';
+import { personUpdateMessage, userPasswordUpdateMessage } from '../utils/constants/message-http.constant';
+import { UserRequestInterface } from '../interfaces/request/user-request.interface';
+import { UserEntity } from '../entities/user.entity';
 
 @JsonController('/auth')
 @Service()
@@ -17,6 +19,28 @@ export class UserPersonController {
         private readonly userService: UserService,
         private readonly personService: PersonService
     ) { }
+
+    @Put('/user/password')
+    async putUserPassword(@Body() request: UserRequestInterface) {
+
+        const resultUser = await this.userService.findUser({ where: { Id: request.id } });
+
+        if (resultUser.status !== OKHttpCode) return resultUser;
+
+        const updateUserData: UserEntity = {
+            ...(resultUser.body as UserEntity),
+            Id: request.id!,
+            Password: request.password,
+            UserModified: 'admin',
+            DateModified: new Date()
+        };
+
+        const resultUserPassword = await this.userService.updateUserPassword(updateUserData);
+
+        if (resultUserPassword.status !== OKHttpCode) return resultUserPassword;
+
+        return outApi(OKHttpCode, userPasswordUpdateMessage);
+    }
 
     @Put('/person')
     async putPerson(@Body() request: PersonRequestInterface) {

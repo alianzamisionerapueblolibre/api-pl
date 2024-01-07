@@ -62,10 +62,11 @@ export class UserService extends BaseService<UserEntity> {
         }
     }
 
-    updateUser = async (userEntity: UserEntity): Promise<UserEntity> => {
+    updateUserPassword = async (userEntity: UserEntity): Promise<BaseResponseInterface> => {
 
         try {
-            return await this.repository.save(userEntity);
+            userEntity.Password = await bcryptHashAsync(userEntity.Password, 8);
+            return outApi(OKHttpCode, await this.repository.save(userEntity));
         } catch (error) {
             throw new errors.InternalServerError();
         }
