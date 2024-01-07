@@ -14,38 +14,45 @@ export class ProfileUserService extends BaseService<ProfileUserEntity> {
         super(db.getRepository(ProfileUserEntity));
     }
 
+    saveNewProfileUserMassive = async (profileUserEntities: ProfileUserEntity[]): Promise<BaseResponseInterface> => {
+
+        try {
+            return outApi(OKHttpCode, await this.repository.save(profileUserEntities));
+        } catch (error) {
+            throw new errors.InternalServerError();
+        }
+    }
+
     saveNewProfileUser = async (profileUserEntity: ProfileUserEntity): Promise<BaseResponseInterface> => {
 
         try {
-            return outApi(OKHttpCode, (await this.repository.save(profileUserEntity)).Id);
+            return outApi(OKHttpCode, await this.repository.save(profileUserEntity));
         } catch (error) {
             throw new errors.InternalServerError();
         }
     }
 
-    updateProfileUser = async (profileUserEntity: ProfileUserEntity): Promise<ProfileUserEntity> => {
+    deleteProfileUser = async (userId: number): Promise<BaseResponseInterface> => {
 
         try {
-            return await this.repository.save(profileUserEntity);
+            return outApi(OKHttpCode, await this.repository.delete({ UserId: userId }));
         } catch (error) {
             throw new errors.InternalServerError();
         }
     }
 
-    deleteProfileUser = async (profileUserEntity: ProfileUserEntity): Promise<ProfileUserEntity> => {
+    findProfileUser = async (queryObj: Record<string, any>): Promise<BaseResponseInterface> => {
+
+        let result;
 
         try {
-            return await this.repository.remove(profileUserEntity);
+            result = await this.repository.find(queryObj);
         } catch (error) {
             throw new errors.InternalServerError();
         }
-    }
 
-    findAllProfileUser = async (): Promise<ProfileUserEntity[]> => {
-        try {
-            return await this.repository.find();
-        } catch (error) {
-            throw new errors.InternalServerError();
-        }
+        if (result === null) throw new errors.UserProfilesNotFound();
+
+        return outApi(OKHttpCode, result);
     }
 }

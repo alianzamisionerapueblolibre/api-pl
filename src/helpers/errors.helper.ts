@@ -55,6 +55,13 @@ export class ProfileNotFound extends NotFound {
     }
 }
 
+export class UserProfilesNotFound extends NotFound {
+    name = 'UserProfilesNotFound'
+    constructor() {
+        super('Profiles from user not found')
+    }
+}
+
 export class UserAlreadyExists extends Conflict {
     name = 'UserAlreadyExists'
     constructor() {
