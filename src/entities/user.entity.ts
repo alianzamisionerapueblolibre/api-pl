@@ -12,7 +12,7 @@ export class UserEntity {
     @Column({ length: 50 })
     Username: string;
 
-    @Column({ type: 'varbinary', length: 255 })
+    @Column({ type: 'text'})
     Password: string;
 
     @Column()

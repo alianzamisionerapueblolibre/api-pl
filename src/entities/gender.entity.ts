@@ -1,15 +1,12 @@
 
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import { Entity, Column, OneToOne, PrimaryColumn } from 'typeorm';
 import { PersonEntity } from './person.entity';
 
 @Entity({ name: 'T_Gender' })
 export class GenderEntity {
 
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     Id: number;
-
-    @Column({ length: 2 })
-    Code: string;
 
     @Column({ length: 50 })
     Description: string;

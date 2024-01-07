@@ -14,37 +14,42 @@ export class UserService extends BaseService<UserEntity> {
         super(db.getRepository(UserEntity));
     }
 
-    findUser = async (queryObj: Record<string, any>): Promise<UserEntity> => {
+    findUser = async (queryObj: Record<string, any>): Promise<BaseResponseInterface> => {
 
-        let user;
+        let result;
 
         try {
-            user = await this.repository.findOne(queryObj);
+            result = await this.repository.findOne(queryObj);
         } catch (error) {
             throw new errors.InternalServerError();
         }
 
-        if (!user) throw new errors.UsersNotFound();
+        if (result === null) throw new errors.UsersNotFound();
 
-        return user;
+        return outApi(OKHttpCode, result);
     }
 
-    ifExistsUser = async (queryObj: Record<string, any>): Promise<void> => {
+    ifExistsUser = async (queryObj: Record<string, any>): Promise<BaseResponseInterface> => {
+
+        let result;
 
         try {
-            if (await this.repository.findOne(queryObj)) return;
+            result = await this.repository.findOne(queryObj);
         } catch (error) {
             throw new errors.InternalServerError();
         }
 
-        throw new errors.UserAlreadyExists();
+        if (result === null) throw new errors.UserAlreadyExists();
+
+        return outApi(OKHttpCode, true);
     }
 
-    ifPasswordCorrect = async (unencryptedPassword: string, userEntity: UserEntity): Promise<void> => {
+    ifPasswordCorrect = async (unencryptedPassword: string, userEntity: UserEntity): Promise<BaseResponseInterface> => {
+
         if (!(await bcryptCompareAsync(unencryptedPassword, userEntity.Password)))
             throw new errors.InvalidUserPassword('Wrong Password');
 
-        return;
+        return outApi(OKHttpCode, true);;
     }
 
     saveNewUser = async (userEntity: UserEntity): Promise<BaseResponseInterface> => {

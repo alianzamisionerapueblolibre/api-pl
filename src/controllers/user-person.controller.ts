@@ -8,6 +8,8 @@ import { ProfileUserService } from '../services/profile-user.service';
 import { UserService } from '../services/user.service';
 import { Service } from 'typedi';
 import { OKHttpCode } from '../utils/constants/status-http.constant';
+import { outApi } from '../helpers/response.helper';
+import { registerUserPersonMessage } from '../utils/constants/message-http.constant';
 
 @JsonController('/user-person')
 @Service()
@@ -41,7 +43,10 @@ export class UserPersonController {
 
         const profileuser = MapperProfileUserRequestToEntity({ profileId: request.profile.id, userId: Number(resultUser.body) });
 
-        return await this.profileuserService.saveNewProfileUser(profileuser);
-    }
+        const resultProfileUser = await this.profileuserService.saveNewProfileUser(profileuser);
 
+        if (resultProfileUser.status !== OKHttpCode) return resultProfileUser;
+
+        return outApi(OKHttpCode, registerUserPersonMessage);
+    }
 }

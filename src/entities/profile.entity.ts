@@ -1,15 +1,12 @@
 
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, OneToMany, PrimaryColumn } from 'typeorm';
 import { ProfileUserEntity } from './profile-user.entity';
 
 @Entity({ name: 'T_Profile' })
 export class ProfileEntity {
 
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     Id: number;
-
-    @Column({ length: 2 })
-    Code: string;
 
     @Column({ length: 50 })
     Description: string;

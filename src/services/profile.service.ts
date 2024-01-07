@@ -35,6 +35,6 @@ export class ProfileService extends BaseService<ProfileEntity> {
 
         if (profile === null) throw new errors.ProfileNotFound();
 
-        return outApi(OKHttpCode, { code: profile.Code, id: profile.Id, description: profile.Description });
+        return outApi(OKHttpCode, { id: profile.Id, description: profile.Description });
     }
 }
