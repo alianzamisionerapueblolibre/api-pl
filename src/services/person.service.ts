@@ -44,9 +44,24 @@ export class PersonService extends BaseService<PersonEntity> {
 
     findAllPerson = async (): Promise<BaseResponseInterface> => {
         try {
-            return outApi(OKHttpCode, MapperMasterResponse(await this.repository.find()));
+            return outApi(OKHttpCode, await this.repository.find());
         } catch (error) {
             throw new errors.InternalServerError();
         }
+    }
+
+    findPerson = async (queryObj: Record<string, any>): Promise<BaseResponseInterface> => {
+
+        let result;
+
+        try {
+            result = await this.repository.find(queryObj);
+        } catch (error) {
+            throw new errors.InternalServerError();
+        }
+
+        if (result === null) throw new errors.PersonNotFound();
+
+        return outApi(OKHttpCode, result);
     }
 }

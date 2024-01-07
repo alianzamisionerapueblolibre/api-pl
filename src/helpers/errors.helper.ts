@@ -41,6 +41,13 @@ export class UsersNotFound extends NotFound {
     }
 }
 
+export class PersonNotFound extends NotFound {
+    name = 'PersonNotFound'
+    constructor() {
+        super('Person not found')
+    }
+}
+
 export class ProfileNotFound extends NotFound {
     name = 'ProfileNotFound'
     constructor() {
