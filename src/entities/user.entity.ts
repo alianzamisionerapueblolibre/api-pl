@@ -2,6 +2,9 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 import { PersonEntity } from './person.entity';
 import { ProfileUserEntity } from './profile-user.entity';
+import { CourseTeacherEntity } from './course-teacher.entity';
+import { PeriodCourseAttendanceEntity } from './period-course-attendance.entity';
+import { PeriodCourseStudentEntity } from './period-course-student.entity';
 
 @Entity({ name: 'T_User' })
 export class UserEntity {
@@ -12,7 +15,7 @@ export class UserEntity {
     @Column({ length: 50 })
     Username: string;
 
-    @Column({ type: 'text'})
+    @Column({ type: 'text' })
     Password: string;
 
     @Column()
@@ -39,4 +42,22 @@ export class UserEntity {
         onUpdate: 'CASCADE',
     })
     ProfileUsers: Array<ProfileUserEntity>;
+
+    @OneToMany(() => CourseTeacherEntity, (courseTeacher: CourseTeacherEntity) => courseTeacher.User, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
+    CourseTeachers: Array<CourseTeacherEntity>;
+
+    @OneToMany(() => PeriodCourseAttendanceEntity, (periodCourseAtt: PeriodCourseAttendanceEntity) => periodCourseAtt.User, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
+    PeriodCourseAttendances: Array<PeriodCourseAttendanceEntity>;
+
+    @OneToMany(() => PeriodCourseStudentEntity, (periodCourseStudent: PeriodCourseStudentEntity) => periodCourseStudent.User, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
+    PeriodCourseStudents: Array<PeriodCourseStudentEntity>;
 }
