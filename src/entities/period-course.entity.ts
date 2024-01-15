@@ -3,6 +3,7 @@ import { PeriodEntity } from './period.entity';
 import { CourseEntity } from './course.entity';
 import { PeriodCourseAttendanceEntity } from './period-course-attendance.entity';
 import { PeriodCourseStudentEntity } from './period-course-student.entity';
+import { PeriodCourseScheduleEntity } from './period-course-schedule.entity';
 
 @Entity({ name: 'T_PeriodCourse' })
 export class PeriodCourseEntity {
@@ -27,18 +28,6 @@ export class PeriodCourseEntity {
     @Column({ length: 10 })
     Classroom: string;
 
-    @Column()
-    DateStart: Date;
-
-    @Column()
-    DateEnd: Date;
-
-    @Column()
-    TimeStart: Date;
-
-    @Column()
-    TimeEnd: Date;
-
     @OneToMany(() => PeriodCourseAttendanceEntity, (periodCourseAtt: PeriodCourseAttendanceEntity) => periodCourseAtt.PeriodCourse, {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
@@ -50,4 +39,10 @@ export class PeriodCourseEntity {
         onUpdate: 'CASCADE',
     })
     PeriodCourseStudents: Array<PeriodCourseStudentEntity>;
+
+    @OneToMany(() => PeriodCourseScheduleEntity, (periodCourseSchedule: PeriodCourseScheduleEntity) => periodCourseSchedule.PeriodCourse, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
+    PeriodCourseSchedules: Array<PeriodCourseScheduleEntity>;
 }

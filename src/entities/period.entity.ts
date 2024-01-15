@@ -10,6 +10,12 @@ export class PeriodEntity {
     @Column({ length: 50 })
     Description: string;
 
+    @Column()
+    DateStart: Date;
+
+    @Column()
+    DateEnd: Date;
+
     @OneToMany(() => PeriodCourseEntity, (periodCourse: PeriodCourseEntity) => periodCourse.Period, {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',

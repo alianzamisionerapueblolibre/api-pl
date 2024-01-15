@@ -4,3 +4,4 @@ export const loginMessage = 'Login Ok!!!';
 export const personUpdateMessage = 'Update Person Ok!!!';
 export const userPasswordUpdateMessage = 'Update User Password Ok!!!';
 export const userProfileNewMessage = 'Register Profile(s) by user Ok!!!';
+export const periodNewMessage = 'Register Period Ok!!!';
