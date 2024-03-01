@@ -8,7 +8,6 @@ const isDevMode = process.env.NODE_ENV == 'development';
 const configurationGlobal: Configuration = {
     port: +(process.env.PORT || 3000),
     debugLogging: isDevMode,
-    //dbsslconn: !isDevMode,
     //jwtSecret: process.env.JWT_SECRET || "your-secret-whatever",
     databaseUrl: process.env.DATABASE_URL || 'mysql://admin:AdminPL2024@@localhost:3306/ChurchPLDB',
     dbEntitiesPath: [

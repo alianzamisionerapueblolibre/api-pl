@@ -8,8 +8,10 @@ import { outApi } from '../helpers/response.helper';
 import { BaseResponseInterface } from '../interfaces/response/base-response.interface';
 import { MapperMasterResponse } from '../mappers/master-response.mapper';
 import { OKHttpCode } from '../utils/constants/status-http.constant';
+import { Authorized } from 'routing-controllers';
 
 @Service()
+@Authorized()
 export class DistrictService extends BaseService<DistrictEntity> {
     constructor(db: DataSource) {
         super(db.getRepository(DistrictEntity));

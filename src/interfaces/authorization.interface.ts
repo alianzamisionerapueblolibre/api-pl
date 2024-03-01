@@ -1,6 +1,6 @@
 
 export interface DecodedJwtToken {
     id: string;
-    userName: string;
+    username: string;
     [x: string]: any;
 }

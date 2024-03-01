@@ -11,6 +11,7 @@ import { UserRequestInterface } from '../interfaces/request/user-request.interfa
 import { UserEntity } from '../entities/user.entity';
 import { ProfileUserService } from '../services/profile-user.service';
 import { ProfileUserEntity } from '../entities/profile-user.entity';
+import { AuthorizationService } from '../services/authorization.service';
 
 @JsonController('/auth')
 @Service()
@@ -19,7 +20,8 @@ export class UserPersonController {
     constructor(
         private readonly userService: UserService,
         private readonly personService: PersonService,
-        private readonly profileUserService: ProfileUserService
+        private readonly profileUserService: ProfileUserService,
+        private readonly authorizationService: AuthorizationService
     ) { }
 
     @Put('/user/password')
@@ -79,7 +81,13 @@ export class UserPersonController {
 
         const person = (resultPerson.body[0]) as PersonEntity;
 
+        const accessToken = this.authorizationService.signAccessToken({
+            id: (resultUser.body).Id,
+            username: (resultUser.body).Username
+        });
+
         return outApi(OKHttpCode, {
+            token: accessToken,
             id: person.Id, firstName: person.FirstName, lastName: person.LastName,
             address: person.Address, email: person.Email, phoneNumber: person.PhoneNumber,
             marital_status: {
