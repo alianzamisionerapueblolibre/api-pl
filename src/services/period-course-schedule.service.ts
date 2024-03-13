@@ -6,8 +6,10 @@ import { BaseResponseInterface } from '../interfaces/response/base-response.inte
 import { outApi } from '../helpers/response.helper';
 import { OKHttpCode } from '../utils/constants/status-http.constant';
 import * as errors from '../helpers/errors.helper';
+import { Authorized } from 'routing-controllers';
 
 @Service()
+@Authorized()
 export class PeriodCourseScheduleService extends BaseService<PeriodCourseScheduleEntity> {
 
     constructor(db: DataSource) {

@@ -7,6 +7,7 @@ import * as errors from '../helpers/errors.helper';
 import { BaseResponseInterface } from '../interfaces/response/base-response.interface';
 import { outApi } from '../helpers/response.helper';
 import { OKHttpCode } from '../utils/constants/status-http.constant';
+import { Authorized } from 'routing-controllers';
 
 @Service()
 export class PersonService extends BaseService<PersonEntity> {

@@ -8,6 +8,7 @@ export class Unauthorized extends Error {
     status = 401
     name = 'Unauthorized'
     expose = false
+    stack = undefined
 }
 
 export class Forbidden extends Error {

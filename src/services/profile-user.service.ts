@@ -7,8 +7,10 @@ import * as errors from '../helpers/errors.helper';
 import { outApi } from '../helpers/response.helper';
 import { BaseResponseInterface } from '../interfaces/response/base-response.interface';
 import { OKHttpCode } from '../utils/constants/status-http.constant';
+import { Authorized } from 'routing-controllers';
 
 @Service()
+@Authorized()
 export class ProfileUserService extends BaseService<ProfileUserEntity> {
     constructor(db: DataSource) {
         super(db.getRepository(ProfileUserEntity));
