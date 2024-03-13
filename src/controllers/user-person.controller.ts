@@ -1,21 +1,20 @@
-import { UserPersonRequestInterface } from '../interfaces/request/userperson-request.interface';
-import { MapperPersonRequestToEntity } from '../mappers/person.mapper';
-import { MapperProfileUserRequestToEntity } from '../mappers/profile-user.mapper';
-import { MapperUserRequestToEntity } from '../mappers/user.mapper';
-import { Body, JsonController, Post, Put } from 'routing-controllers';
+import { Authorized, Body, JsonController, Put } from 'routing-controllers';
 import { PersonService } from '../services/person.service';
 import { ProfileUserService } from '../services/profile-user.service';
 import { UserService } from '../services/user.service';
 import { Service } from 'typedi';
 import { OKHttpCode } from '../utils/constants/status-http.constant';
 import { outApi } from '../helpers/response.helper';
-import { personUpdateMessage, registerUserPersonMessage, userProfileNewMessage } from '../utils/constants/message-http.constant';
+import { personUpdateMessage, userPasswordUpdateMessage, userProfileNewMessage } from '../utils/constants/message-http.constant';
 import { PersonRequestInterface } from '../interfaces/request/person-request.interface';
 import { PersonEntity } from '../entities/person.entity';
 import { UserProfileRequestInterface } from '../interfaces/request/userprofile-request.interface';
 import { ProfileUserEntity } from '../entities/profile-user.entity';
+import { UserRequestInterface } from '../interfaces/request/user-request.interface';
+import { UserEntity } from '../entities/user.entity';
 
 @JsonController('/user-person')
+@Authorized()
 @Service()
 export class UserPersonController {
     constructor(
@@ -75,34 +74,25 @@ export class UserPersonController {
         return outApi(OKHttpCode, personUpdateMessage);
     }
 
-    @Post()
-    async postUserPerson(@Body() request: UserPersonRequestInterface) {
+    @Put('/password')
+    async putUserPassword(@Body() request: UserRequestInterface) {
 
-        request.person.userCreated = 'admin';
-        request.person.dateCreated = new Date();
+        const resultUser = await this.userService.findUser({ where: { Id: request.id } });
 
-        const person = MapperPersonRequestToEntity(request.person);
+        if (resultUser.status !== OKHttpCode) return resultUser;
 
-        const resultPerson = await this.personService.saveNewPerson(person);
+        const updateUserData: UserEntity = {
+            ...(resultUser.body as UserEntity),
+            Id: request.id!,
+            Password: request.password,
+            UserModified: 'admin',
+            DateModified: new Date()
+        };
 
-        if (resultPerson.status !== OKHttpCode) return resultPerson;
+        const resultUserPassword = await this.userService.updateUserPassword(updateUserData);
 
-        request.user.person = { id: Number(resultPerson.body) };
-        request.user.userCreated = 'admin';
-        request.user.dateCreated = new Date();
+        if (resultUserPassword.status !== OKHttpCode) return resultUserPassword;
 
-        const user = MapperUserRequestToEntity(request.user);
-
-        const resultUser = await this.userService.saveNewUser(user);
-
-        if (resultUser.status !== OKHttpCode) return resultPerson;
-
-        const profileuser = MapperProfileUserRequestToEntity({ profileId: request.profile.id, userId: Number(resultUser.body) });
-
-        const resultProfileUser = await this.profileUserService.saveNewProfileUser(profileuser);
-
-        if (resultProfileUser.status !== OKHttpCode) return resultProfileUser;
-
-        return outApi(OKHttpCode, registerUserPersonMessage);
+        return outApi(OKHttpCode, userPasswordUpdateMessage);
     }
 }

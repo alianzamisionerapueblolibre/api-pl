@@ -1,4 +1,4 @@
-import { Body, JsonController, Post } from 'routing-controllers';
+import { Authorized, Body, JsonController, Post } from 'routing-controllers';
 import { PeriodService } from '../services/period.service';
 import { Service } from 'typedi';
 import { OKHttpCode } from '../utils/constants/status-http.constant';
@@ -12,6 +12,7 @@ import { PeriodCourseScheduleEntity } from '../entities/period-course-schedule.e
 import { PeriodCourseScheduleService } from '../services/period-course-schedule.service';
 
 @JsonController('/period')
+@Authorized()
 @Service()
 export class PeriodController {
     constructor(
@@ -19,7 +20,7 @@ export class PeriodController {
         private readonly periodCourseService: PeriodCourseService,
         private readonly periodCourseScheduleService: PeriodCourseScheduleService) { }
 
-    @Post()
+    @Post('/open')
     async postPeriodOpen(@Body() request: PeriodOpenRequestInterface) {
 
         const resultPeriod = await this.periodService.findAllPeriod();
